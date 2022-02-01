@@ -19,6 +19,12 @@ from the root of the directory
 ```bash
 npm start
 ```
+
+## How to test app
+from the root of the directory
+```bash
+npm test
+```
 ## Backend Features
 
 * Registers & logs in users
