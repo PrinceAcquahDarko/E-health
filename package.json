@@ -7,7 +7,7 @@
     "compile": "tsc --watch",
     "start": "node dist/app.js",
     "dev": "nodemon dist/app.js",
-    "test": "jest dist --watch"
+    "test": "jest dist --coverage"
   },
   "repository": {
     "type": "git",
