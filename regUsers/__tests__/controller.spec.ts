@@ -15,7 +15,10 @@ describe('Regsiter Controller', function(){
                 lastname: 'acquah',
                 email: 'info@gmail.com',
                 password: '123456',
-                status: 'user'
+            },
+
+            file:{
+                path: 'help'
             }
         }
 
@@ -41,7 +44,7 @@ describe('Regsiter Controller', function(){
         await reg.main(req, res, next)
         
         expect(spy).toHaveBeenCalledTimes(1)
-        expect(spy).toHaveBeenCalledWith('pic is required', 300)
+        expect(spy).toHaveBeenCalledWith('status is required', 300)
         expect(next).toHaveBeenCalledTimes(1)
 
     })
@@ -56,19 +59,9 @@ describe('Regsiter Controller', function(){
         expect(next).toHaveBeenCalledTimes(1)
     })
 
-    test('main function calls the insertIntoDb function when credentials are valid ', async function(){
-        req.body.pic = 'jfsaopjaspoejo'
-        let reg = new RegController()
-        let spy2 = jest.spyOn(reg, 'insertIntoDb').mockImplementation((data) => Promise.resolve(''))
-        
-        await reg.main(req, res, next)
-        
+    test('main function calls the hashpassword function which hash the password when credentials are valid ', async function(){
+        req.body.status = 'user'   //since it only needs a status property to make the credentials valid
 
-        expect(spy2).toHaveBeenCalledTimes(1)
-    })
-
-    test('main function calls the hashpassword function which hash the password ', async function(){
-        req.body.pic = 'jfsaopjaspoejo'
         let reg = new RegController()
 
         let spy1 = jest.spyOn(reg, 'hashPassword')
@@ -80,8 +73,22 @@ describe('Regsiter Controller', function(){
         expect(spy1).toHaveBeenCalledTimes(1)
     })
 
+    test('main function calls the insertIntoDb function when credentials are valid ', async function(){
+        req.body.status = 'user'   //since it only needs a status property to make the credentials valid
+        let reg = new RegController()
+        let spy2 = jest.spyOn(reg, 'insertIntoDb').mockImplementation((data) => Promise.resolve(''))
+        
+        await reg.main(req, res, next)
+        
+
+        expect(spy2).toHaveBeenCalledTimes(1)
+    })
+
+   
+
     test('main function sets the res.status to 201 when credentials are valid ', async function(){
-        req.body.pic = 'jfsaopjaspoejo'
+        req.body.status = 'user'   //since it only needs a status property to make the credentials valid
+        
         let reg = new RegController()
         let spy2 = jest.spyOn(reg, 'insertIntoDb').mockImplementation((data) => Promise.resolve('user'))
         

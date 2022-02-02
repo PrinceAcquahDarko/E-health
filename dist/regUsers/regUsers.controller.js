@@ -58,15 +58,18 @@ require("dotenv").config();
 var bcryptjs_1 = __importDefault(require("bcryptjs"));
 var RegController = /** @class */ (function () {
     function RegController() {
+        this.Port = process.env.PORT || 'localhost:3000';
         this.secret = process.env.SECRET;
         this.main = this.main.bind(this);
     }
     RegController.prototype.main = function (req, res, next) {
+        var _a;
         return __awaiter(this, void 0, void 0, function () {
             var data, validData, msg, err, user, error_1;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
+            return __generator(this, function (_b) {
+                switch (_b.label) {
                     case 0:
+                        req.body.pic = "".concat(this.Port, "/").concat((_a = req.file) === null || _a === void 0 ? void 0 : _a.path);
                         data = __assign({}, req.body);
                         validData = this.validCredentials(data);
                         if (validData.error) {
@@ -74,19 +77,19 @@ var RegController = /** @class */ (function () {
                             err = this.errorfunc(msg, 300);
                             return [2 /*return*/, next(err)];
                         }
-                        _a.label = 1;
+                        _b.label = 1;
                     case 1:
-                        _a.trys.push([1, 3, , 4]);
+                        _b.trys.push([1, 3, , 4]);
                         this.hashPassword(data);
                         return [4 /*yield*/, this.insertIntoDb(data)];
                     case 2:
-                        user = _a.sent();
+                        user = _b.sent();
                         if (user) {
                             return [2 /*return*/, res.status(201).send({ msg: 'user created', user: user })];
                         }
                         return [3 /*break*/, 4];
                     case 3:
-                        error_1 = _a.sent();
+                        error_1 = _b.sent();
                         next(error_1);
                         return [3 /*break*/, 4];
                     case 4: return [2 /*return*/];

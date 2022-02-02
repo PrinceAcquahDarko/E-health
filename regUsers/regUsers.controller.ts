@@ -8,14 +8,16 @@ import bcrypt from "bcryptjs";
 
 
 export class RegController{
+    Port = process.env.PORT || 'localhost:3000'
     secret = process.env.SECRET!
     constructor(){
         this.main = this.main.bind(this)
     }
 
    async main(req:Request, res:Response,  next:NextFunction){
+        req.body.pic = `${this.Port}/${req.file?.path}`
         const data = {...req.body}
-
+        
         let validData = this.validCredentials(data)
         if(validData.error){
             const msg = validData.error.details[0].message

@@ -49,7 +49,9 @@ describe('Regsiter Controller', function () {
                 lastname: 'acquah',
                 email: 'info@gmail.com',
                 password: '123456',
-                status: 'user'
+            },
+            file: {
+                path: 'help'
             }
         };
         next = jest.fn();
@@ -86,7 +88,7 @@ describe('Regsiter Controller', function () {
                     case 1:
                         _a.sent();
                         expect(spy).toHaveBeenCalledTimes(1);
-                        expect(spy).toHaveBeenCalledWith('pic is required', 300);
+                        expect(spy).toHaveBeenCalledWith('status is required', 300);
                         expect(next).toHaveBeenCalledTimes(1);
                         return [2 /*return*/];
                 }
@@ -110,31 +112,13 @@ describe('Regsiter Controller', function () {
             });
         });
     });
-    test('main function calls the insertIntoDb function when credentials are valid ', function () {
-        return __awaiter(this, void 0, void 0, function () {
-            var reg, spy2;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        req.body.pic = 'jfsaopjaspoejo';
-                        reg = new regUsers_controller_1.RegController();
-                        spy2 = jest.spyOn(reg, 'insertIntoDb').mockImplementation(function (data) { return Promise.resolve(''); });
-                        return [4 /*yield*/, reg.main(req, res, next)];
-                    case 1:
-                        _a.sent();
-                        expect(spy2).toHaveBeenCalledTimes(1);
-                        return [2 /*return*/];
-                }
-            });
-        });
-    });
-    test('main function calls the hashpassword function which hash the password ', function () {
+    test('main function calls the hashpassword function which hash the password when credentials are valid ', function () {
         return __awaiter(this, void 0, void 0, function () {
             var reg, spy1, spy2;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        req.body.pic = 'jfsaopjaspoejo';
+                        req.body.status = 'user'; //since it only needs a status property to make the credentials valid
                         reg = new regUsers_controller_1.RegController();
                         spy1 = jest.spyOn(reg, 'hashPassword');
                         spy2 = jest.spyOn(reg, 'insertIntoDb').mockImplementation(function (data) { return Promise.resolve(''); });
@@ -147,13 +131,31 @@ describe('Regsiter Controller', function () {
             });
         });
     });
+    test('main function calls the insertIntoDb function when credentials are valid ', function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var reg, spy2;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        req.body.status = 'user'; //since it only needs a status property to make the credentials valid
+                        reg = new regUsers_controller_1.RegController();
+                        spy2 = jest.spyOn(reg, 'insertIntoDb').mockImplementation(function (data) { return Promise.resolve(''); });
+                        return [4 /*yield*/, reg.main(req, res, next)];
+                    case 1:
+                        _a.sent();
+                        expect(spy2).toHaveBeenCalledTimes(1);
+                        return [2 /*return*/];
+                }
+            });
+        });
+    });
     test('main function sets the res.status to 201 when credentials are valid ', function () {
         return __awaiter(this, void 0, void 0, function () {
             var reg, spy2;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        req.body.pic = 'jfsaopjaspoejo';
+                        req.body.status = 'user'; //since it only needs a status property to make the credentials valid
                         reg = new regUsers_controller_1.RegController();
                         spy2 = jest.spyOn(reg, 'insertIntoDb').mockImplementation(function (data) { return Promise.resolve('user'); });
                         return [4 /*yield*/, reg.main(req, res, next)];
