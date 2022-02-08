@@ -43,8 +43,7 @@ const UserSchema = new mongoose.Schema(
           
           },
           pic: {
-              type:String,
-               required: true
+              type:String
             }
     }
 )

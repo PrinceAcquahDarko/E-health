@@ -76,6 +76,13 @@ describe('User', function(){
                 
             })
         })
+        test('pic', function(){
+            const description = userSchema.schema.obj.pic;
+            expect(description).toEqual({
+                type: String,
+                
+            })
+        })
 
         
     })

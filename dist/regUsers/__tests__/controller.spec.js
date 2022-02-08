@@ -37,16 +37,20 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var regUsers_controller_1 = require("../regUsers.controller");
-var req, res, next;
+var req, res, next, token;
 describe('Regsiter Controller', function () {
     beforeEach(function () {
+        token = {
+            token: '',
+            status: '',
+            firstname: ''
+        };
         res = {};
         res.status = jest.fn(function (x) { return res; });
         res.send = jest.fn(function (x) { return res; });
         req = {
             body: {
                 firstname: 'prince',
-                lastname: 'acquah',
                 email: 'info@gmail.com',
                 password: '123456',
             },
@@ -64,7 +68,7 @@ describe('Regsiter Controller', function () {
                     case 0:
                         reg = new regUsers_controller_1.RegController();
                         spy = jest.spyOn(reg, 'validCredentials');
-                        spy2 = jest.spyOn(reg, 'insertIntoDb').mockImplementation(function (data) { return Promise.resolve(''); });
+                        spy2 = jest.spyOn(reg, 'insertIntoDb').mockImplementation(function (data) { return Promise.resolve(token); });
                         return [4 /*yield*/, reg.main(req, res, next)];
                     case 1:
                         _a.sent();
@@ -83,12 +87,12 @@ describe('Regsiter Controller', function () {
                     case 0:
                         reg = new regUsers_controller_1.RegController();
                         spy = jest.spyOn(reg, 'errorfunc');
-                        spy2 = jest.spyOn(reg, 'insertIntoDb').mockImplementation(function (data) { return Promise.resolve(''); });
+                        spy2 = jest.spyOn(reg, 'insertIntoDb').mockImplementation(function (data) { return Promise.resolve(token); });
                         return [4 /*yield*/, reg.main(req, res, next)];
                     case 1:
                         _a.sent();
                         expect(spy).toHaveBeenCalledTimes(1);
-                        expect(spy).toHaveBeenCalledWith('status is required', 300);
+                        expect(spy).toHaveBeenCalledWith('lastname is required', 300);
                         expect(next).toHaveBeenCalledTimes(1);
                         return [2 /*return*/];
                 }
@@ -102,7 +106,7 @@ describe('Regsiter Controller', function () {
                 switch (_a.label) {
                     case 0:
                         reg = new regUsers_controller_1.RegController();
-                        spy2 = jest.spyOn(reg, 'insertIntoDb').mockImplementation(function (data) { return Promise.resolve(''); });
+                        spy2 = jest.spyOn(reg, 'insertIntoDb').mockImplementation(function (data) { return Promise.resolve(token); });
                         return [4 /*yield*/, reg.main(req, res, next)];
                     case 1:
                         _a.sent();
@@ -118,10 +122,10 @@ describe('Regsiter Controller', function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        req.body.status = 'user'; //since it only needs a status property to make the credentials valid
+                        req.body.lastname = 'user'; //since it only needs a lastname property to make the credentials valid
                         reg = new regUsers_controller_1.RegController();
                         spy1 = jest.spyOn(reg, 'hashPassword');
-                        spy2 = jest.spyOn(reg, 'insertIntoDb').mockImplementation(function (data) { return Promise.resolve(''); });
+                        spy2 = jest.spyOn(reg, 'insertIntoDb').mockImplementation(function (data) { return Promise.resolve(token); });
                         return [4 /*yield*/, reg.main(req, res, next)];
                     case 1:
                         _a.sent();
@@ -137,9 +141,9 @@ describe('Regsiter Controller', function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        req.body.status = 'user'; //since it only needs a status property to make the credentials valid
+                        req.body.lastname = 'user'; //since it only needs a lastname property to make the credentials valid
                         reg = new regUsers_controller_1.RegController();
-                        spy2 = jest.spyOn(reg, 'insertIntoDb').mockImplementation(function (data) { return Promise.resolve(''); });
+                        spy2 = jest.spyOn(reg, 'insertIntoDb').mockImplementation(function (data) { return Promise.resolve(token); });
                         return [4 /*yield*/, reg.main(req, res, next)];
                     case 1:
                         _a.sent();
@@ -155,14 +159,14 @@ describe('Regsiter Controller', function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        req.body.status = 'user'; //since it only needs a status property to make the credentials valid
+                        req.body.lastname = 'user'; //since it only needs a lastname property to make the credentials valid
                         reg = new regUsers_controller_1.RegController();
-                        spy2 = jest.spyOn(reg, 'insertIntoDb').mockImplementation(function (data) { return Promise.resolve('user'); });
+                        spy2 = jest.spyOn(reg, 'insertIntoDb').mockImplementation(function (data) { return Promise.resolve(token); });
                         return [4 /*yield*/, reg.main(req, res, next)];
                     case 1:
                         _a.sent();
                         expect(res.status).toHaveBeenCalledWith(201);
-                        expect(res.status(200).send).toHaveBeenCalledWith({ msg: 'user created', user: 'user' });
+                        expect(res.status(200).send).toHaveBeenCalledWith({ msg: 'user created', user: token });
                         return [2 /*return*/];
                 }
             });

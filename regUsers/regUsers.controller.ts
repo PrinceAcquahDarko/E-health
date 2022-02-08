@@ -15,7 +15,7 @@ export class RegController{
     }
 
    async main(req:Request, res:Response,  next:NextFunction){
-        req.body.pic = `${this.Port}/${req.file?.path}`
+        // req.body.pic = `${this.Port}/${req.file?.path}`
         const data = {...req.body}
         
         let validData = this.validCredentials(data)
@@ -43,7 +43,11 @@ export class RegController{
             let user = new userSchema(data)
             let savedUser = await user.save()
             let token = jwt.sign({ id: savedUser._id }, this.secret);
-            return token
+            return {
+                token,
+                status: user.status,
+                firstname: user.firstname
+            }
         } catch (error) {
             throw(error)
         }
@@ -55,8 +59,6 @@ export class RegController{
             password: joi.string().min(6).required(),
             firstname: joi.string().required(),
             lastname:joi.string().required(),
-            pic:joi.string().required(),
-            status:joi.string().required()
         })
         const ops = {
             errors: {

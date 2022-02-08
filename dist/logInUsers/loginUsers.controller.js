@@ -95,7 +95,8 @@ var loginController = /** @class */ (function () {
                         token = this.generateToken(user._id);
                         response = {
                             token: token,
-                            status: user.status
+                            status: user.status,
+                            firstname: user.firstname
                         };
                         return [2 /*return*/, res.status(200).send({ msg: 'succesful', response: response })];
                     case 4:

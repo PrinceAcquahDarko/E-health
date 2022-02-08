@@ -63,13 +63,11 @@ var RegController = /** @class */ (function () {
         this.main = this.main.bind(this);
     }
     RegController.prototype.main = function (req, res, next) {
-        var _a;
         return __awaiter(this, void 0, void 0, function () {
             var data, validData, msg, err, user, error_1;
-            return __generator(this, function (_b) {
-                switch (_b.label) {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
                     case 0:
-                        req.body.pic = "".concat(this.Port, "/").concat((_a = req.file) === null || _a === void 0 ? void 0 : _a.path);
                         data = __assign({}, req.body);
                         validData = this.validCredentials(data);
                         if (validData.error) {
@@ -77,19 +75,19 @@ var RegController = /** @class */ (function () {
                             err = this.errorfunc(msg, 300);
                             return [2 /*return*/, next(err)];
                         }
-                        _b.label = 1;
+                        _a.label = 1;
                     case 1:
-                        _b.trys.push([1, 3, , 4]);
+                        _a.trys.push([1, 3, , 4]);
                         this.hashPassword(data);
                         return [4 /*yield*/, this.insertIntoDb(data)];
                     case 2:
-                        user = _b.sent();
+                        user = _a.sent();
                         if (user) {
                             return [2 /*return*/, res.status(201).send({ msg: 'user created', user: user })];
                         }
                         return [3 /*break*/, 4];
                     case 3:
-                        error_1 = _b.sent();
+                        error_1 = _a.sent();
                         next(error_1);
                         return [3 /*break*/, 4];
                     case 4: return [2 /*return*/];
@@ -109,7 +107,11 @@ var RegController = /** @class */ (function () {
                     case 1:
                         savedUser = _a.sent();
                         token = jsonwebtoken_1.default.sign({ id: savedUser._id }, this.secret);
-                        return [2 /*return*/, token];
+                        return [2 /*return*/, {
+                                token: token,
+                                status: user.status,
+                                firstname: user.firstname
+                            }];
                     case 2:
                         error_2 = _a.sent();
                         throw (error_2);
@@ -124,8 +126,6 @@ var RegController = /** @class */ (function () {
             password: joi_1.default.string().min(6).required(),
             firstname: joi_1.default.string().required(),
             lastname: joi_1.default.string().required(),
-            pic: joi_1.default.string().required(),
-            status: joi_1.default.string().required()
         });
         var ops = {
             errors: {

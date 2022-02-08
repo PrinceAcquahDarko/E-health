@@ -67,6 +67,12 @@ describe('User', function () {
                 type: String,
             });
         });
+        test('pic', function () {
+            var description = regUsers_model_1.default.schema.obj.pic;
+            expect(description).toEqual({
+                type: String,
+            });
+        });
     });
 });
 //# sourceMappingURL=model.spec.js.map

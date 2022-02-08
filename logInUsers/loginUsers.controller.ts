@@ -35,7 +35,8 @@ export class loginController{
             let token = this.generateToken(user._id)
             let response = {
                 token,
-                status: user.status
+                status: user.status,
+                firstname: user.firstname
               }
 
               return res.status(200).send({msg: 'succesful', response})

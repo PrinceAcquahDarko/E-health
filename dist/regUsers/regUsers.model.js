@@ -43,8 +43,7 @@ var UserSchema = new mongoose_1.default.Schema({
         type: String,
     },
     pic: {
-        type: String,
-        required: true
+        type: String
     }
 });
 exports.default = mongoose_1.default.model('Euser', UserSchema);
