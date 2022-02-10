@@ -4,7 +4,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var mongoose_1 = __importDefault(require("mongoose"));
-var ChatSchema = new mongoose_1.default.Schema({
+var Schema = mongoose_1.default.Schema;
+var SubsSchema = new Schema({
     to: {
         type: Number,
         required: true
@@ -13,19 +14,16 @@ var ChatSchema = new mongoose_1.default.Schema({
         type: Number,
         required: true
     },
-    content: {
-        type: String,
+    subs: {
+        type: Boolean,
         required: true
     },
-    textSort: {
-        type: Number,
-        required: true
+    fromUser: {
+        type: Schema.Types.ObjectId, ref: 'Euser', required: true
     },
-    day: {
-        type: Date,
-        required: true,
-        default: Date.now
+    toUser: {
+        type: Schema.Types.ObjectId, ref: 'Euser', required: true
     }
 });
-exports.default = mongoose_1.default.model('Chat', ChatSchema);
-//# sourceMappingURL=chat.model.js.map
+exports.default = mongoose_1.default.model('Subs', SubsSchema);
+//# sourceMappingURL=subs.model.js.map

@@ -64,33 +64,41 @@ var RegController = /** @class */ (function () {
     }
     RegController.prototype.main = function (req, res, next) {
         return __awaiter(this, void 0, void 0, function () {
-            var data, validData, msg, err, user, error_1;
+            var data, num, validData, msg, err, user, error_1;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
+                        console.log(req.body);
                         data = __assign({}, req.body);
+                        data.status = 'health';
+                        data.pic = 'assets/imgs/nurse3.jpg';
+                        return [4 /*yield*/, this.getAllUsersdb()];
+                    case 1:
+                        num = _a.sent();
+                        data.uniqueNum = num.length + 1;
+                        console.log(data.uniqueNum, 'from unitq');
                         validData = this.validCredentials(data);
                         if (validData.error) {
                             msg = validData.error.details[0].message;
                             err = this.errorfunc(msg, 300);
                             return [2 /*return*/, next(err)];
                         }
-                        _a.label = 1;
-                    case 1:
-                        _a.trys.push([1, 3, , 4]);
+                        _a.label = 2;
+                    case 2:
+                        _a.trys.push([2, 4, , 5]);
                         this.hashPassword(data);
                         return [4 /*yield*/, this.insertIntoDb(data)];
-                    case 2:
+                    case 3:
                         user = _a.sent();
                         if (user) {
                             return [2 /*return*/, res.status(201).send({ msg: 'user created', user: user })];
                         }
-                        return [3 /*break*/, 4];
-                    case 3:
+                        return [3 /*break*/, 5];
+                    case 4:
                         error_1 = _a.sent();
                         next(error_1);
-                        return [3 /*break*/, 4];
-                    case 4: return [2 /*return*/];
+                        return [3 /*break*/, 5];
+                    case 5: return [2 /*return*/];
                 }
             });
         });
@@ -110,7 +118,7 @@ var RegController = /** @class */ (function () {
                         return [2 /*return*/, {
                                 token: token,
                                 status: user.status,
-                                firstname: user.firstname
+                                num: user.uniqueNum
                             }];
                     case 2:
                         error_2 = _a.sent();
@@ -126,6 +134,9 @@ var RegController = /** @class */ (function () {
             password: joi_1.default.string().min(6).required(),
             firstname: joi_1.default.string().required(),
             lastname: joi_1.default.string().required(),
+            status: joi_1.default.string(),
+            pic: joi_1.default.string(),
+            uniqueNum: joi_1.default.number()
         });
         var ops = {
             errors: {
@@ -144,6 +155,52 @@ var RegController = /** @class */ (function () {
     };
     RegController.prototype.hashPassword = function (data) {
         data.password = bcryptjs_1.default.hashSync(data.password, 8);
+    };
+    RegController.prototype.getAllHealth = function (req, res, next) {
+        return __awaiter(this, void 0, void 0, function () {
+            var users;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, regUsers_model_1.default.find({
+                            status: 'health'
+                        })];
+                    case 1:
+                        users = _a.sent();
+                        return [2 /*return*/, res.status(200).send({ users: users })];
+                }
+            });
+        });
+    };
+    RegController.prototype.getAllUsers = function (req, res, next) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                try {
+                }
+                catch (error) {
+                    next(error);
+                }
+                return [2 /*return*/];
+            });
+        });
+    };
+    RegController.prototype.getAllUsersdb = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var users, error_3;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        return [4 /*yield*/, regUsers_model_1.default.find()];
+                    case 1:
+                        users = _a.sent();
+                        return [2 /*return*/, users];
+                    case 2:
+                        error_3 = _a.sent();
+                        throw (error_3);
+                    case 3: return [2 /*return*/];
+                }
+            });
+        });
     };
     return RegController;
 }());

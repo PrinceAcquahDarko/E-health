@@ -44,7 +44,11 @@ const UserSchema = new mongoose.Schema(
           },
           pic: {
               type:String
-            }
+            },
+            uniqueNum: {
+              type:Number,
+              required:true
+            },
     }
 )
 

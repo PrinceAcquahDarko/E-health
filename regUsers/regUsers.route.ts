@@ -4,11 +4,13 @@ import {RegController} from './regUsers.controller'
 let regcon = new RegController()
 import {Utiliy} from '../utility/utility'
 
-let util = new Utiliy()
-const upload = util.fileUpload()
+// let util = new Utiliy()
+// const upload = util.fileUpload()
+// upload.single('pic'),
 function Regroute(){
     regrouter.route('/')
-        .post(upload.single('pic'), regcon.main)
+        .post(regcon.main)
+        .get(regcon.getAllHealth)
     return regrouter
 }
 

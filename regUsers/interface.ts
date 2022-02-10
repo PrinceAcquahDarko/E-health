@@ -3,9 +3,10 @@ export interface IRegister{
     lastname: string,
     password: string,
     email: string,
-    status: 'user | health'
+    status: string,
     profession?: string,
     description?: string,
-    work?: string
+    work?: string,
+    pic?:string
 
 }

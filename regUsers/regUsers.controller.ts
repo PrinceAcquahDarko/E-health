@@ -15,9 +15,14 @@ export class RegController{
     }
 
    async main(req:Request, res:Response,  next:NextFunction){
-        // req.body.pic = `${this.Port}/${req.file?.path}`
-        const data = {...req.body}
-        
+       console.log(req.body)
+        let data = {...req.body}
+        data.status = 'health'
+        data.pic = 'assets/imgs/nurse3.jpg'
+        // data.status = 'health'
+        let num = await this.getAllUsersdb()
+        data.uniqueNum = num.length + 1
+        console.log(data.uniqueNum, 'from unitq')
         let validData = this.validCredentials(data)
         if(validData.error){
             const msg = validData.error.details[0].message
@@ -46,7 +51,7 @@ export class RegController{
             return {
                 token,
                 status: user.status,
-                firstname: user.firstname
+                num:user.uniqueNum
             }
         } catch (error) {
             throw(error)
@@ -59,6 +64,10 @@ export class RegController{
             password: joi.string().min(6).required(),
             firstname: joi.string().required(),
             lastname:joi.string().required(),
+            status:joi.string(),
+            pic:joi.string(),
+            uniqueNum:joi.number()
+
         })
         const ops = {
             errors: {
@@ -81,6 +90,35 @@ export class RegController{
 
     hashPassword(data:IRegister){
         data.password = bcrypt.hashSync(data.password, 8);
+    }
+
+
+
+    async getAllHealth(req:Request, res:Response, next:NextFunction){
+        let users = await userSchema.find({
+            status: 'health'
+        })
+
+        return res.status(200).send({users})
+
+    }
+   async  getAllUsers(req:Request, res:Response, next:NextFunction){
+        try {
+            
+        } catch (error) {
+                next(error)
+        }
+    }
+
+    async getAllUsersdb(){
+        try {
+        let users = await userSchema.find()
+        return users
+        } catch (error) {
+                throw(error)
+        }
+
+
     }
 
     

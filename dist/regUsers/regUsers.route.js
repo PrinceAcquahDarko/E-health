@@ -7,12 +7,13 @@ var express_1 = __importDefault(require("express"));
 var regrouter = express_1.default.Router();
 var regUsers_controller_1 = require("./regUsers.controller");
 var regcon = new regUsers_controller_1.RegController();
-var utility_1 = require("../utility/utility");
-var util = new utility_1.Utiliy();
-var upload = util.fileUpload();
+// let util = new Utiliy()
+// const upload = util.fileUpload()
+// upload.single('pic'),
 function Regroute() {
     regrouter.route('/')
-        .post(upload.single('pic'), regcon.main);
+        .post(regcon.main)
+        .get(regcon.getAllHealth);
     return regrouter;
 }
 exports.default = Regroute();

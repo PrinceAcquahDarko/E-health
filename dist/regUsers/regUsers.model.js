@@ -44,7 +44,11 @@ var UserSchema = new mongoose_1.default.Schema({
     },
     pic: {
         type: String
-    }
+    },
+    uniqueNum: {
+        type: Number,
+        required: true
+    },
 });
 exports.default = mongoose_1.default.model('Euser', UserSchema);
 //# sourceMappingURL=regUsers.model.js.map

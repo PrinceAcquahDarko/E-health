@@ -5,6 +5,7 @@ import docs from './docs'
 import morgan from 'morgan'
 import logrouter from './logInUsers/loginUsers.route'
 import regrouter from './regUsers/regUsers.route'
+import chatrouter from './chat/chat.route'
 
 
 
@@ -18,6 +19,7 @@ app.use('/uploads', express.static('uploads'))
 
 app.use('/api-register', regrouter)
 app.use('/api-login', logrouter)
+app.use('/api-chat', chatrouter)
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(docs))
 
 export {app}
