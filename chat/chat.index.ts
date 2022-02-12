@@ -1,34 +1,28 @@
 import {io} from '../app'
-
-
 require("dotenv").config();
+import {ChatController} from './chat.controller'
+
+
 
 const secret = process.env.SECRET!
-import {ChatController} from './chat.controller'
 let ch = new ChatController()
 
 function chat(){
-    console.log('heyyyy')
     io.use((socket:any,  next) => {
-        let count = Math.random() * 10
         const userId = socket.handshake.auth.userId
         
         if(userId){
             socket.userID = userId
-            // socket.connection = true
             return next()
         }
-        socket.userID =  count;
-        count += 1
-        next()
       })
+
+
     io.on("connection", async (socket:any) => {
-        socket.emit('session', {
-          key: socket.userID
-        })
     
         socket.join(socket.userID)
         const users = [];
+
         for (let [id, socket] of io.of("/").sockets) {
           users.push({
             userID: id,
@@ -38,6 +32,7 @@ function chat(){
         socket.emit("users", users);
         // ...
         let tempChat = await ch.getSaveTempChats(socket.userID)
+
         if(tempChat.length){
           tempChat.forEach(chat => {
                socket.emit("savedChats", chat);
@@ -47,7 +42,6 @@ function chat(){
         }
 
         let tempNoti = await ch.getTempNoti(socket.userID)
-        console.log(tempNoti, 'from tempNoti..')
         if(tempNoti.length){
           tempNoti.forEach(chat => {
                socket.emit("savedNoti", chat);
@@ -59,6 +53,8 @@ function chat(){
             userID: socket.id,
             id: socket.handshake.auth.userId
           });
+
+
     
         socket.on("request message", async (data:any) => {
       
@@ -69,13 +65,14 @@ function chat(){
             msg: 'you have a new chat request'
           }
           await ch.notification(notifi)
+
+
           if(data.connection){
             socket.to(data.to).emit("request message", {
               content: data.content,
               from: socket.userID,
             });
           }else{
-            console.log('you are not online')
             await ch.Tempnotification(notifi)
           }
         
@@ -100,18 +97,15 @@ function chat(){
             from,
             subs:true
           }
-          let res = await ch.saveSubs(to, from, body)
-          // let subs = new ChatSchema(body)
-          // let saved =  await subs.save()
-          console.log(res)
+         let sub = await ch.saveSubs(to, from, body)
+   
           if(data.connection){
             socket.to(data.to).emit("confirm message", {
               content: data.content,
               from: socket.userID,
+              sub
             });
           }else{
-            console.log('you are not online from confirm message')
-            //save to a temporal db
             await ch.Tempnotification(noti)
           }
           
@@ -128,14 +122,11 @@ function chat(){
             textSort: socket.userID,
             day: data.day
           }
-          console.log(data.day, 'from data.day')
-          console.log(Date.now(), 'from data.day')
           if(data.health){
             content.from = data.to
             content.to = socket.userID
           }
           await ch.saveChats(content)
-          console.log(data.connection, 'from socket.connection')
           if(data.connection){
             socket.to(data.to).emit("private message", {
               content: data.content,
@@ -147,32 +138,19 @@ function chat(){
               from:socket.userID,
               content: data.content
             }
-            console.log('because you are not connected i console.logged you')
             let res = await ch.saveTempChats(obj)
-            console.log(res)
           }
       
         });
     
-        // socket.on("disconnect", async () => {
-        //   const matchingSockets = await io.in(socket.userID).allSockets();
-        //   const isDisconnected = matchingSockets.size === 0;
-        //   if (isDisconnected) {
-        //     // notify other users
-        //     console.log(socket.userID, 'user disconnected')
-        //     socket.broadcast.emit("user disconnected", socket.userID);
-          
-        //   }
-        // });
+   
 
           socket.on("disconnect", async () => {
                 const matchingSockets = await io.in(socket.userID).allSockets();
                  const isDisconnected = matchingSockets.size === 0;
                   if (isDisconnected) {
-                    // notify other users
                     socket.broadcast.emit("user disconnected", socket.userID);
-                    // update the connection status of the session
-                    // socket.connection = false
+                
     }
   });
       });

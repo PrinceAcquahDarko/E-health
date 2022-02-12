@@ -58,7 +58,6 @@ var ChatController = /** @class */ (function () {
                     case 0:
                         _a.trys.push([0, 5, , 6]);
                         users = void 0;
-                        console.log(req.query.status);
                         if (!(req.query.status === 'user')) return [3 /*break*/, 2];
                         return [4 /*yield*/, subs_model_1.default.find({
                                 from: req.query.me,
@@ -91,8 +90,6 @@ var ChatController = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 5, , 6]);
-                        console.log(req.query.me, 'from me');
-                        console.log(req.query.to, 'from to');
                         users = void 0;
                         if (!(req.query.status === 'user')) return [3 /*break*/, 2];
                         return [4 /*yield*/, chat_model_1.default.find({
@@ -230,7 +227,6 @@ var ChatController = /** @class */ (function () {
                         return [4 /*yield*/, notification.save()];
                     case 1:
                         res = _a.sent();
-                        console.log(res);
                         return [3 /*break*/, 3];
                     case 2:
                         error_8 = _a.sent();
@@ -326,7 +322,6 @@ var ChatController = /** @class */ (function () {
                         return [4 /*yield*/, subs.save()];
                     case 3:
                         saved = _a.sent();
-                        console.log(saved);
                         return [2 /*return*/, saved];
                     case 4:
                         error_12 = _a.sent();

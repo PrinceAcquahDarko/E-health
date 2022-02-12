@@ -68,15 +68,15 @@ var RegController = /** @class */ (function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        console.log(req.body);
                         data = __assign({}, req.body);
-                        data.status = 'health';
-                        data.pic = 'assets/imgs/nurse3.jpg';
+                        //this is just for a demo purpose
+                        if (data.status === 'health') {
+                            this.forDemo(data);
+                        }
                         return [4 /*yield*/, this.getAllUsersdb()];
                     case 1:
                         num = _a.sent();
                         data.uniqueNum = num.length + 1;
-                        console.log(data.uniqueNum, 'from unitq');
                         validData = this.validCredentials(data);
                         if (validData.error) {
                             msg = validData.error.details[0].message;
@@ -139,7 +139,8 @@ var RegController = /** @class */ (function () {
             lastname: joi_1.default.string().required(),
             status: joi_1.default.string(),
             pic: joi_1.default.string(),
-            uniqueNum: joi_1.default.number()
+            uniqueNum: joi_1.default.number(),
+            profession: joi_1.default.string()
         });
         var ops = {
             errors: {
@@ -230,7 +231,6 @@ var RegController = /** @class */ (function () {
                             })];
                     case 2:
                         updated = _b.sent();
-                        console.log(updated);
                         return [2 /*return*/, res.status(200).send({ message: 'updated successfully' })];
                     case 3:
                         error_4 = _b.sent();
@@ -267,6 +267,34 @@ var RegController = /** @class */ (function () {
                 }
             });
         });
+    };
+    RegController.prototype.forDemo = function (data) {
+        switch (data.firstname) {
+            case 'Doc1':
+                data.pic = 'assets/imgs/doc1.jpg';
+                break;
+            case 'Doc2':
+                data.pic = 'assets/imgs/doc2.jpg';
+                break;
+            case 'Doc3':
+                data.pic = 'assets/imgs/doc3.jpg';
+                break;
+            case 'Doc4':
+                data.pic = 'assets/imgs/doc4.jpg';
+                break;
+            case 'Nurse1':
+                data.pic = 'assets/imgs/nurse1.jpg';
+                break;
+            case 'Nurse2':
+                data.pic = 'assets/imgs/nurse2.jpg';
+                break;
+            case 'Nurse3':
+                data.pic = 'assets/imgs/nurse3.jpg';
+                break;
+            case 'Mid1':
+                data.pic = 'assets/imgs/midwife.jpg';
+                break;
+        }
     };
     return RegController;
 }());

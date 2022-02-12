@@ -15,7 +15,6 @@ export class ChatController{
     async getAllHealth(req:Request, res:Response, next:NextFunction){
         try {
             let users;
-            console.log(req.query.status)
             if(req.query.status ==='user'){
                  users = await SubSchema.find({
                     from: req.query.me,
@@ -38,8 +37,6 @@ export class ChatController{
 
     async getChats(req:Request, res:Response, next:NextFunction){
         try {
-            console.log(req.query.me, 'from me') 
-            console.log(req.query.to, 'from to')
             let users;
             if(req.query.status === 'user'){
              users = await ChatSchema.find({
@@ -114,7 +111,6 @@ export class ChatController{
         try {
             let notification = new notificationModel(id)
            let res = await notification.save()
-           console.log(res)
           
         } catch (error) {
                 throw(error)
@@ -169,7 +165,6 @@ export class ChatController{
         body.toUser = toUser
         let subs = new SubSchema(body)
           let saved =  await subs.save()
-          console.log(saved)
           return saved
 
         } catch (error) {

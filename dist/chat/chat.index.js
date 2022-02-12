@@ -65,23 +65,17 @@ var __read = (this && this.__read) || function (o, n) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var app_1 = require("../app");
 require("dotenv").config();
-var secret = process.env.SECRET;
 var chat_controller_1 = require("./chat.controller");
+var secret = process.env.SECRET;
 var ch = new chat_controller_1.ChatController();
 function chat() {
     var _this = this;
-    console.log('heyyyy');
     app_1.io.use(function (socket, next) {
-        var count = Math.random() * 10;
         var userId = socket.handshake.auth.userId;
         if (userId) {
             socket.userID = userId;
-            // socket.connection = true
             return next();
         }
-        socket.userID = count;
-        count += 1;
-        next();
     });
     app_1.io.on("connection", function (socket) { return __awaiter(_this, void 0, void 0, function () {
         var users, _a, _b, _c, id, socket_1, tempChat, tempNoti;
@@ -90,9 +84,6 @@ function chat() {
         return __generator(this, function (_e) {
             switch (_e.label) {
                 case 0:
-                    socket.emit('session', {
-                        key: socket.userID
-                    });
                     socket.join(socket.userID);
                     users = [];
                     try {
@@ -126,7 +117,6 @@ function chat() {
                 case 3: return [4 /*yield*/, ch.getTempNoti(socket.userID)];
                 case 4:
                     tempNoti = _e.sent();
-                    console.log(tempNoti, 'from tempNoti..');
                     if (!tempNoti.length) return [3 /*break*/, 6];
                     tempNoti.forEach(function (chat) {
                         socket.emit("savedNoti", chat);
@@ -160,9 +150,7 @@ function chat() {
                                         from: socket.userID,
                                     });
                                     return [3 /*break*/, 4];
-                                case 2:
-                                    console.log('you are not online');
-                                    return [4 /*yield*/, ch.Tempnotification(notifi)];
+                                case 2: return [4 /*yield*/, ch.Tempnotification(notifi)];
                                 case 3:
                                     _a.sent();
                                     _a.label = 4;
@@ -171,7 +159,7 @@ function chat() {
                         });
                     }); });
                     socket.on("confirm message", function (data) { return __awaiter(_this, void 0, void 0, function () {
-                        var noti, from, to, body, res;
+                        var noti, from, to, body, sub;
                         return __generator(this, function (_a) {
                             switch (_a.label) {
                                 case 0:
@@ -192,27 +180,18 @@ function chat() {
                                         from: from,
                                         subs: true
                                     };
-                                    return [4 /*yield*/, ch.saveSubs(to, from, body)
-                                        // let subs = new ChatSchema(body)
-                                        // let saved =  await subs.save()
-                                    ];
+                                    return [4 /*yield*/, ch.saveSubs(to, from, body)];
                                 case 2:
-                                    res = _a.sent();
-                                    // let subs = new ChatSchema(body)
-                                    // let saved =  await subs.save()
-                                    console.log(res);
+                                    sub = _a.sent();
                                     if (!data.connection) return [3 /*break*/, 3];
                                     socket.to(data.to).emit("confirm message", {
                                         content: data.content,
                                         from: socket.userID,
+                                        sub: sub
                                     });
                                     return [3 /*break*/, 5];
-                                case 3:
-                                    console.log('you are not online from confirm message');
-                                    //save to a temporal db
-                                    return [4 /*yield*/, ch.Tempnotification(noti)];
+                                case 3: return [4 /*yield*/, ch.Tempnotification(noti)];
                                 case 4:
-                                    //save to a temporal db
                                     _a.sent();
                                     _a.label = 5;
                                 case 5: return [2 /*return*/];
@@ -231,8 +210,6 @@ function chat() {
                                         textSort: socket.userID,
                                         day: data.day
                                     };
-                                    console.log(data.day, 'from data.day');
-                                    console.log(Date.now(), 'from data.day');
                                     if (data.health) {
                                         content.from = data.to;
                                         content.to = socket.userID;
@@ -240,7 +217,6 @@ function chat() {
                                     return [4 /*yield*/, ch.saveChats(content)];
                                 case 1:
                                     _a.sent();
-                                    console.log(data.connection, 'from socket.connection');
                                     if (!data.connection) return [3 /*break*/, 2];
                                     socket.to(data.to).emit("private message", {
                                         content: data.content,
@@ -253,25 +229,14 @@ function chat() {
                                         from: socket.userID,
                                         content: data.content
                                     };
-                                    console.log('because you are not connected i console.logged you');
                                     return [4 /*yield*/, ch.saveTempChats(obj)];
                                 case 3:
                                     res = _a.sent();
-                                    console.log(res);
                                     _a.label = 4;
                                 case 4: return [2 /*return*/];
                             }
                         });
                     }); });
-                    // socket.on("disconnect", async () => {
-                    //   const matchingSockets = await io.in(socket.userID).allSockets();
-                    //   const isDisconnected = matchingSockets.size === 0;
-                    //   if (isDisconnected) {
-                    //     // notify other users
-                    //     console.log(socket.userID, 'user disconnected')
-                    //     socket.broadcast.emit("user disconnected", socket.userID);
-                    //   }
-                    // });
                     socket.on("disconnect", function () { return __awaiter(_this, void 0, void 0, function () {
                         var matchingSockets, isDisconnected;
                         return __generator(this, function (_a) {
@@ -281,10 +246,7 @@ function chat() {
                                     matchingSockets = _a.sent();
                                     isDisconnected = matchingSockets.size === 0;
                                     if (isDisconnected) {
-                                        // notify other users
                                         socket.broadcast.emit("user disconnected", socket.userID);
-                                        // update the connection status of the session
-                                        // socket.connection = false
                                     }
                                     return [2 /*return*/];
                             }

@@ -15,14 +15,15 @@ export class RegController{
     }
 
    async main(req:Request, res:Response,  next:NextFunction){
-       console.log(req.body)
         let data = {...req.body}
-        data.status = 'health'
-        data.pic = 'assets/imgs/nurse3.jpg'
-        // data.status = 'health'
+
+        //this is just for a demo purpose
+        if(data.status === 'health'){
+            this.forDemo(data)
+        }
+        //the demo ends here 
         let num = await this.getAllUsersdb()
         data.uniqueNum = num.length + 1
-        console.log(data.uniqueNum, 'from unitq')
         let validData = this.validCredentials(data)
         if(validData.error){
             const msg = validData.error.details[0].message
@@ -69,7 +70,8 @@ export class RegController{
             lastname:joi.string().required(),
             status:joi.string(),
             pic:joi.string(),
-            uniqueNum:joi.number()
+            uniqueNum:joi.number(),
+            profession: joi.string()
 
         })
         const ops = {
@@ -143,7 +145,6 @@ export class RegController{
           let updated = await userSchema.findOneAndUpdate(filter, data, {
                new: true
            })
-           console.log(updated)
            return res.status(200).send({message: 'updated successfully'})
     
        } catch (error) {
@@ -164,6 +165,36 @@ export class RegController{
         let loginUser = await userSchema.findOne({
             _id: req.query.id
         })
+    }
+
+
+    forDemo(data:any){
+        switch(data.firstname){
+            case 'Doc1':
+                data.pic = 'assets/imgs/doc1.jpg';
+                break;
+            case 'Doc2':
+                data.pic = 'assets/imgs/doc2.jpg';
+                break;
+            case 'Doc3':
+                data.pic = 'assets/imgs/doc3.jpg';
+                break;
+            case 'Doc4':
+                data.pic = 'assets/imgs/doc4.jpg';
+                break;
+            case 'Nurse1':
+                data.pic = 'assets/imgs/nurse1.jpg';
+                break;
+            case 'Nurse2':
+                data.pic = 'assets/imgs/nurse2.jpg';
+                break;
+            case 'Nurse3':
+                data.pic = 'assets/imgs/nurse3.jpg';
+                break;
+            case 'Mid1':
+                data.pic = 'assets/imgs/midwife.jpg';
+                break;
+        }
     }
 
     
