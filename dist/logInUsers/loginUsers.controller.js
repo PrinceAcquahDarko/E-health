@@ -97,6 +97,8 @@ var loginController = /** @class */ (function () {
                             token: token,
                             status: user.status,
                             firstname: user.firstname,
+                            lastname: user.lastname,
+                            pic: user.pic ? user.pic : '',
                             num: user.uniqueNum
                         };
                         return [2 /*return*/, res.status(200).send({ msg: 'succesful', response: response })];

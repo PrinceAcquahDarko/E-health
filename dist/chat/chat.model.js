@@ -22,9 +22,8 @@ var ChatSchema = new mongoose_1.default.Schema({
         required: true
     },
     day: {
-        type: Date,
+        type: String,
         required: true,
-        default: Date.now
     }
 });
 exports.default = mongoose_1.default.model('Chat', ChatSchema);

@@ -18,9 +18,8 @@ const ChatSchema = new mongoose.Schema({
         required:true
     },
     day:{
-        type:Date,
+        type:String,
         required: true,
-        default:Date.now
     }
 })
 

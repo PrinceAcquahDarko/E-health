@@ -12,6 +12,8 @@ function ChatRoute() {
         .get(logCon.getAllHealth);
     chatRouter.route('/msgs')
         .get(logCon.getChats);
+    chatRouter.route('/notifications')
+        .get(logCon.getNotifications);
     return chatRouter;
 }
 exports.default = ChatRoute();

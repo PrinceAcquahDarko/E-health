@@ -37,6 +37,8 @@ export class loginController{
                 token,
                 status: user.status,
                 firstname: user.firstname,
+                lastname: user.lastname,
+                pic:user.pic ? user.pic : '',
                 num:user.uniqueNum
               }
 

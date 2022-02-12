@@ -197,9 +197,31 @@ var ChatController = /** @class */ (function () {
             });
         });
     };
+    ChatController.prototype.getNotifications = function (req, res, next) {
+        return __awaiter(this, void 0, void 0, function () {
+            var users, error_7;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        return [4 /*yield*/, notification_model_1.default.find({
+                                to: req.query.to,
+                            }).sort({ date: -1 })];
+                    case 1:
+                        users = _a.sent();
+                        return [2 /*return*/, res.status(200).send({ users: users })];
+                    case 2:
+                        error_7 = _a.sent();
+                        next(error_7);
+                        return [3 /*break*/, 3];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        });
+    };
     ChatController.prototype.notification = function (id) {
         return __awaiter(this, void 0, void 0, function () {
-            var notification, res, error_7;
+            var notification, res, error_8;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -211,8 +233,8 @@ var ChatController = /** @class */ (function () {
                         console.log(res);
                         return [3 /*break*/, 3];
                     case 2:
-                        error_7 = _a.sent();
-                        throw (error_7);
+                        error_8 = _a.sent();
+                        throw (error_8);
                     case 3: return [2 /*return*/];
                 }
             });
@@ -220,7 +242,7 @@ var ChatController = /** @class */ (function () {
     };
     ChatController.prototype.Tempnotification = function (id) {
         return __awaiter(this, void 0, void 0, function () {
-            var notification, error_8;
+            var notification, error_9;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -231,27 +253,6 @@ var ChatController = /** @class */ (function () {
                         _a.sent();
                         return [3 /*break*/, 3];
                     case 2:
-                        error_8 = _a.sent();
-                        throw (error_8);
-                    case 3: return [2 /*return*/];
-                }
-            });
-        });
-    };
-    ChatController.prototype.getTempNoti = function (id) {
-        return __awaiter(this, void 0, void 0, function () {
-            var users, error_9;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        _a.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, tempNoti_model_1.default.find({
-                                to: id
-                            })];
-                    case 1:
-                        users = _a.sent();
-                        return [2 /*return*/, users];
-                    case 2:
                         error_9 = _a.sent();
                         throw (error_9);
                     case 3: return [2 /*return*/];
@@ -259,14 +260,14 @@ var ChatController = /** @class */ (function () {
             });
         });
     };
-    ChatController.prototype.getSaveTempChats = function (id) {
+    ChatController.prototype.getTempNoti = function (id) {
         return __awaiter(this, void 0, void 0, function () {
             var users, error_10;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, temp_chat_model_1.default.find({
+                        return [4 /*yield*/, tempNoti_model_1.default.find({
                                 to: id
                             })];
                     case 1:
@@ -280,10 +281,31 @@ var ChatController = /** @class */ (function () {
             });
         });
     };
+    ChatController.prototype.getSaveTempChats = function (id) {
+        return __awaiter(this, void 0, void 0, function () {
+            var users, error_11;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        return [4 /*yield*/, temp_chat_model_1.default.find({
+                                to: id
+                            })];
+                    case 1:
+                        users = _a.sent();
+                        return [2 /*return*/, users];
+                    case 2:
+                        error_11 = _a.sent();
+                        throw (error_11);
+                    case 3: return [2 /*return*/];
+                }
+            });
+        });
+    };
     //find unique num and save
     ChatController.prototype.saveSubs = function (to, from, body) {
         return __awaiter(this, void 0, void 0, function () {
-            var fromUser, toUser, subs, saved, error_11;
+            var fromUser, toUser, subs, saved, error_12;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -307,8 +329,8 @@ var ChatController = /** @class */ (function () {
                         console.log(saved);
                         return [2 /*return*/, saved];
                     case 4:
-                        error_11 = _a.sent();
-                        throw (error_11);
+                        error_12 = _a.sent();
+                        throw (error_12);
                     case 5: return [2 /*return*/];
                 }
             });

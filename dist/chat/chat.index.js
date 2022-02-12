@@ -147,7 +147,9 @@ function chat() {
                                 case 0:
                                     notifi = {
                                         to: data.to,
-                                        from: data.from
+                                        from: data.from,
+                                        day: data.day,
+                                        msg: 'you have a new chat request'
                                     };
                                     return [4 /*yield*/, ch.notification(notifi)];
                                 case 1:
@@ -160,10 +162,8 @@ function chat() {
                                     return [3 /*break*/, 4];
                                 case 2:
                                     console.log('you are not online');
-                                    //to be saved in temporal notification
                                     return [4 /*yield*/, ch.Tempnotification(notifi)];
                                 case 3:
-                                    //to be saved in temporal notification
                                     _a.sent();
                                     _a.label = 4;
                                 case 4: return [2 /*return*/];
@@ -177,7 +177,9 @@ function chat() {
                                 case 0:
                                     noti = {
                                         to: data.to,
-                                        from: data.from
+                                        from: data.from,
+                                        day: data.day,
+                                        msg: 'Your chat request has been accepted'
                                     };
                                     return [4 /*yield*/, ch.notification(noti)];
                                 case 1:
@@ -226,8 +228,11 @@ function chat() {
                                         content: data.content,
                                         from: socket.userID,
                                         to: data.to,
-                                        textSort: socket.userID
+                                        textSort: socket.userID,
+                                        day: data.day
                                     };
+                                    console.log(data.day, 'from data.day');
+                                    console.log(Date.now(), 'from data.day');
                                     if (data.health) {
                                         content.from = data.to;
                                         content.to = socket.userID;

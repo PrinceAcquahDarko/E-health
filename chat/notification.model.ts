@@ -9,6 +9,14 @@ const NotificationSchema = new mongoose.Schema({
         type:Number,
         required:true
     },
+    day:{
+        type:String,
+        required: true,
+    },
+    msg:{
+        type:String,
+        required:true
+    }
  
    
 })

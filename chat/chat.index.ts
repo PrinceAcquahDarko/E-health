@@ -64,7 +64,9 @@ function chat(){
       
           let notifi = {
             to:data.to,
-            from:data.from
+            from:data.from,
+            day: data.day,
+            msg: 'you have a new chat request'
           }
           await ch.notification(notifi)
           if(data.connection){
@@ -74,7 +76,6 @@ function chat(){
             });
           }else{
             console.log('you are not online')
-            //to be saved in temporal notification
             await ch.Tempnotification(notifi)
           }
         
@@ -84,7 +85,9 @@ function chat(){
         socket.on("confirm message", async (data:any) => {
           let noti = {
             to:data.to,
-            from:data.from
+            from:data.from,
+            day:data.day,
+            msg: 'Your chat request has been accepted'
           }
           await ch.notification(noti)
 
@@ -122,8 +125,11 @@ function chat(){
             content: data.content,
             from: socket.userID,
             to:data.to,
-            textSort: socket.userID
+            textSort: socket.userID,
+            day: data.day
           }
+          console.log(data.day, 'from data.day')
+          console.log(Date.now(), 'from data.day')
           if(data.health){
             content.from = data.to
             content.to = socket.userID

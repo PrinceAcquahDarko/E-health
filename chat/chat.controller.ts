@@ -97,6 +97,19 @@ export class ChatController{
         }
     }
 
+    async getNotifications(req:Request, res:Response, next:NextFunction){
+        try {
+            let users = await notificationModel.find({
+                to: req.query.to,
+            }).sort({date: -1})
+            return res.status(200).send({users})
+          
+        } catch (error) {
+                next(error)
+        }   
+
+    }
+
     async notification(id:any){
         try {
             let notification = new notificationModel(id)

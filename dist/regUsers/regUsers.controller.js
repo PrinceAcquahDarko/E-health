@@ -118,7 +118,10 @@ var RegController = /** @class */ (function () {
                         return [2 /*return*/, {
                                 token: token,
                                 status: user.status,
-                                num: user.uniqueNum
+                                num: user.uniqueNum,
+                                lastname: user.lastname,
+                                firstname: user.firstname,
+                                pic: user.pic ? user.pic : ''
                             }];
                     case 2:
                         error_2 = _a.sent();
@@ -198,6 +201,69 @@ var RegController = /** @class */ (function () {
                         error_3 = _a.sent();
                         throw (error_3);
                     case 3: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    RegController.prototype.UpdateUser = function (req, res, next) {
+        var _a;
+        return __awaiter(this, void 0, void 0, function () {
+            var id, data, url, filter, updated, error_4;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0:
+                        id = req.query.id;
+                        data = req.body;
+                        url = process.env.PORT || 'http://localhost:3000';
+                        if (req.file) {
+                            req.body.pic = "".concat(url, "/").concat((_a = req.file) === null || _a === void 0 ? void 0 : _a.path);
+                        }
+                        if (data.password) {
+                            data.password = bcryptjs_1.default.hashSync(data.password, 8);
+                        }
+                        filter = { uniqueNum: id };
+                        _b.label = 1;
+                    case 1:
+                        _b.trys.push([1, 3, , 4]);
+                        return [4 /*yield*/, regUsers_model_1.default.findOneAndUpdate(filter, data, {
+                                new: true
+                            })];
+                    case 2:
+                        updated = _b.sent();
+                        console.log(updated);
+                        return [2 /*return*/, res.status(200).send({ message: 'updated successfully' })];
+                    case 3:
+                        error_4 = _b.sent();
+                        next(error_4);
+                        return [3 /*break*/, 4];
+                    case 4: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    RegController.prototype.getSingleUser = function (req, res, next) {
+        return __awaiter(this, void 0, void 0, function () {
+            var loginUser_1, error_5, loginUser;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        return [4 /*yield*/, regUsers_model_1.default.findOne({
+                                uniqueNum: req.query.id
+                            })];
+                    case 1:
+                        loginUser_1 = _a.sent();
+                        return [2 /*return*/, res.status(200).send({ user: loginUser_1 })];
+                    case 2:
+                        error_5 = _a.sent();
+                        next(error_5);
+                        return [3 /*break*/, 3];
+                    case 3: return [4 /*yield*/, regUsers_model_1.default.findOne({
+                            _id: req.query.id
+                        })];
+                    case 4:
+                        loginUser = _a.sent();
+                        return [2 /*return*/];
                 }
             });
         });

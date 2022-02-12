@@ -51,7 +51,10 @@ export class RegController{
             return {
                 token,
                 status: user.status,
-                num:user.uniqueNum
+                num:user.uniqueNum,
+                lastname: user.lastname,
+                firstname: user.firstname,
+                pic:user.pic ? user.pic : ''
             }
         } catch (error) {
             throw(error)
@@ -119,6 +122,48 @@ export class RegController{
         }
 
 
+    }
+
+
+
+    async UpdateUser(req:Request, res:Response, next:NextFunction){
+        let id = req.query.id
+        let data = req.body
+        const url = process.env.PORT || 'http://localhost:3000'
+
+        if(req.file){
+            req.body.pic = `${url}/${req.file?.path}`
+        }
+        if(data.password){
+          data.password = bcrypt.hashSync(data.password, 8)
+        }
+        const filter = {uniqueNum:id}
+    
+        try {
+          let updated = await userSchema.findOneAndUpdate(filter, data, {
+               new: true
+           })
+           console.log(updated)
+           return res.status(200).send({message: 'updated successfully'})
+    
+       } catch (error) {
+               next(error)
+       }
+    }
+
+    async getSingleUser(req:Request, res:Response, next:NextFunction){
+        try {
+            let loginUser = await userSchema.findOne({
+                uniqueNum: req.query.id
+            })
+
+            return res.status(200).send({user:loginUser})
+        } catch (error) {
+                next(error)
+        }
+        let loginUser = await userSchema.findOne({
+            _id: req.query.id
+        })
     }
 
     

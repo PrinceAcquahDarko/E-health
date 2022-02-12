@@ -13,6 +13,14 @@ var NotificationSchema = new mongoose_1.default.Schema({
         type: Number,
         required: true
     },
+    day: {
+        type: String,
+        required: true,
+    },
+    msg: {
+        type: String,
+        required: true
+    }
 });
 exports.default = mongoose_1.default.model('Notification', NotificationSchema);
 //# sourceMappingURL=notification.model.js.map
