@@ -14,10 +14,10 @@ var upload = util.fileUpload();
 function Regroute() {
     regrouter.route('/')
         .post(regcon.main)
-        .get(regcon.getAllHealth)
-        .put(upload.single('pic'), regcon.UpdateUser);
+        .get(util.getLoggedInUser, regcon.getAllHealth)
+        .put(util.getLoggedInUser, upload.single('pic'), regcon.UpdateUser);
     regrouter.route('/id')
-        .get(regcon.getSingleUser);
+        .get(util.getLoggedInUser, regcon.getSingleUser);
     return regrouter;
 }
 exports.default = Regroute();

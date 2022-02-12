@@ -6,7 +6,7 @@ require("dotenv").config();
 
 export class Utiliy{
     secret = process.env.SECRET!
-    constructor(){this.fileUpload = this.fileUpload.bind(this)}
+    constructor(){this.fileUpload = this.fileUpload.bind(this); this.getLoggedInUser = this.getLoggedInUser.bind(this)}
 
 
     getLoggedInUser(req:Request, res:Response, next:NextFunction){

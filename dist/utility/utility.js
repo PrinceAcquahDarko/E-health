@@ -11,6 +11,7 @@ var Utiliy = /** @class */ (function () {
     function Utiliy() {
         this.secret = process.env.SECRET;
         this.fileUpload = this.fileUpload.bind(this);
+        this.getLoggedInUser = this.getLoggedInUser.bind(this);
     }
     Utiliy.prototype.getLoggedInUser = function (req, res, next) {
         if (!req.header('Authorization')) {
