@@ -9,6 +9,7 @@ var mongoose_1 = __importDefault(require("mongoose"));
 var http_1 = require("http");
 var socket_io_1 = require("socket.io");
 var chat_index_1 = __importDefault(require("./chat/chat.index"));
+var environment_pro_1 = require("./Environment/environment.pro");
 require("dotenv").config();
 var URL = process.env.URL;
 var PORT = process.env.PORT || 3000;
@@ -18,7 +19,7 @@ mongoose_1.default.connect(URL)
 var httpServer = (0, http_1.createServer)(server_1.app);
 exports.io = new socket_io_1.Server(httpServer, {
     cors: {
-        origin: "http://localhost:4200"
+        origin: environment_pro_1.enviroment.url
     }
 });
 (0, chat_index_1.default)();
