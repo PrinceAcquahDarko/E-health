@@ -4,6 +4,7 @@ import {Request, Response, NextFunction} from 'express'
 import { createServer }  from "http";
 import { Server } from "socket.io";
 import chat from './chat/chat.index'
+import {enviroment} from './Environment/environment.pro'
 require("dotenv").config();
 
 const URL = process.env.URL!
@@ -18,7 +19,7 @@ const httpServer = createServer(app);
 
 export const io = new Server(httpServer, {
     cors: {
-        origin: "http://localhost:4200"
+        origin: enviroment.url
     }
 });
 
